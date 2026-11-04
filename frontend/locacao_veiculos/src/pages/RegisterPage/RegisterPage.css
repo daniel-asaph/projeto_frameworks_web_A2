@@ -1,0 +1,12 @@
+.register-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
