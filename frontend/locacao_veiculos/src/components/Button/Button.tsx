@@ -1,15 +1,26 @@
-import React from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import './Button.css';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+export type ButtonVariant = 'primary' | 'disabled-muted';
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  variant?: ButtonVariant;
 }
 
-export function Button({ children, type = 'button', className = '', ...props }: ButtonProps) {
+export function Button({
+  children,
+  type = 'button',
+  variant = 'primary',
+  className = '',
+  ...props
+}: ButtonProps) {
   return (
     <button
       type={type}
-      className={`btn-primary ${className}`.trim()}
+      className={`btn-primary ${variant === 'disabled-muted' ? 'btn-disabled-muted' : ''} ${className}`
+        .replace(/\s+/g, ' ')
+        .trim()}
       {...props}
     >
       {children}

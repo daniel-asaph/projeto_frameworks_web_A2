@@ -1,0 +1,125 @@
+.register-vehicle-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+}
+
+.register-vehicle-card {
+  width: 100%;
+  max-width: 1000px;
+  padding: 32px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(34px);
+  -webkit-backdrop-filter: blur(34px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.register-vehicle-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.register-vehicle-title {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.register-vehicle-subtitle {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.register-vehicle-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.register-vehicle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.register-vehicle-field {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.register-vehicle-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.register-vehicle-input {
+  height: 50px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.register-vehicle-input::placeholder {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.register-vehicle-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.register-vehicle-submit-btn {
+  width: auto;
+  height: 50px;
+  padding: 13px 28px;
+  border-radius: 12px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.register-vehicle-required-note {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 720px) {
+  .register-vehicle-row {
+    grid-template-columns: 1fr;
+  }
+
+  .register-vehicle-title {
+    font-size: 32px;
+  }
+}
+
+.register-vehicle-error {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin: 0;
+}

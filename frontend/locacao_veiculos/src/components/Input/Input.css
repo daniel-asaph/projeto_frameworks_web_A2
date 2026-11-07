@@ -37,6 +37,30 @@
   padding-left: 44px;
 }
 
+.input-icon-container.right {
+  left: auto;
+  right: 16px;
+}
+
+.input-field.with-icon-right {
+  padding-right: 44px;
+}
+
+
+.input-field[type='date'] {
+  color-scheme: dark;
+  position: relative;
+}
+
+.input-field[type='date']::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  cursor: pointer;
+}
+
 .input-field::placeholder {
   color: rgba(255, 255, 255, 0.55);
 }

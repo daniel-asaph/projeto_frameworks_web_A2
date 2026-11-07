@@ -1,29 +1,26 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { AuthLayout } from '../../components/AuthLayout/AuthLayout';
 import { AuthCard } from '../../components/AuthCard/AuthCard';
 import { AuthHeader } from '../../components/AuthHeader/AuthHeader';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import { AuthFooter } from '../../components/AuthFooter/AuthFooter';
+import type { LoginPayload } from '../../types';
 import './LoginPage.css';
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
 export interface LoginPageProps {
-  onLogin?: (credentials: LoginCredentials) => void;
+  onLogin?: (credentials: LoginPayload) => void;
   onNavigateToRegister?: () => void;
 }
 
 export function LoginPage({ onLogin, onNavigateToRegister }: LoginPageProps) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onLogin?.({ email, password });
+    onLogin?.({ email: email.trim(), senha });
   };
 
   return (
@@ -48,8 +45,8 @@ export function LoginPage({ onLogin, onNavigateToRegister }: LoginPageProps) {
               icon="lock"
               type="password"
               placeholder="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
               required
             />
           </div>

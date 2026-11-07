@@ -1,10 +1,11 @@
-import React from 'react';
+import type { InputHTMLAttributes } from 'react';
 import './Input.css';
 
-export type InputIconType = 'mail' | 'lock' | 'user';
+export type InputIconType = 'mail' | 'lock' | 'user' | 'calendar';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: InputIconType;
+  iconPosition?: 'left' | 'right';
 }
 
 function renderIcon(icon?: InputIconType) {
@@ -54,17 +55,38 @@ function renderIcon(icon?: InputIconType) {
           <circle cx="12" cy="7" r="4" />
         </svg>
       );
+    case 'calendar':
+      return (
+        <svg
+          className="input-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+          <path d="M16 2v4M8 2v4M3 10h18" />
+        </svg>
+      );
     default:
       return null;
   }
 }
 
-export function Input({ icon, className = '', ...props }: InputProps) {
+export function Input({ icon, iconPosition = 'left', className = '', ...props }: InputProps) {
+  const iconClass = icon ? (iconPosition === 'right' ? 'with-icon-right' : 'with-icon') : '';
+
   return (
     <div className="input-wrapper">
-      {icon && <span className="input-icon-container">{renderIcon(icon)}</span>}
+      {icon && (
+        <span className={`input-icon-container ${iconPosition === 'right' ? 'right' : ''}`.trim()}>
+          {renderIcon(icon)}
+        </span>
+      )}
       <input
-        className={`input-field ${icon ? 'with-icon' : ''} ${className}`.trim()}
+        className={`input-field ${iconClass} ${className}`.replace(/\s+/g, ' ').trim()}
         {...props}
       />
     </div>
