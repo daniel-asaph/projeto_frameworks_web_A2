@@ -1,8 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const veiculoService = require("../services/veiculoService");
+
+const veiculoController = require('../controllers/veiculoController');
 
 router.post('/veiculos', veiculoController.criarVeiculo);
+
 router.get('/veiculos', veiculoController.listarVeiculos);
 
 module.exports = router;
