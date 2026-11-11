@@ -1,0 +1,177 @@
+.my-rentals-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.my-rentals-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.my-rentals-title {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.my-rentals-card {
+  width: 100%;
+  padding: 32px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(34px);
+  -webkit-backdrop-filter: blur(34px);
+  border: 0.8px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.my-rentals-section-title {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.rentals-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.rentals-table-header {
+  display: grid;
+  grid-template-columns: 2.1fr 1.1fr 1.1fr 1.35fr 1.15fr 1fr 1.3fr;
+  align-items: center;
+  height: 46px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 0.8px solid rgba(255, 255, 255, 0.06);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 880px;
+}
+
+.rentals-table-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 880px;
+}
+
+.rentals-table-row {
+  display: grid;
+  grid-template-columns: 2.1fr 1.1fr 1.1fr 1.35fr 1.15fr 1fr 1.3fr;
+  align-items: center;
+  height: 80px;
+  padding: 0 16px;
+  border-bottom: 0.8px solid rgba(255, 255, 255, 0.08);
+}
+
+.rentals-table-row:last-child {
+  border-bottom: none;
+}
+
+.rental-vehicle-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rental-vehicle-name {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.rental-vehicle-plate {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.rental-date-cell {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rental-date-cell.muted-dash {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.rental-total-cell {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.rental-status-cell {
+  display: flex;
+  align-items: center;
+}
+
+.rental-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.rental-status-badge.badge-active {
+  background: rgba(37, 99, 235, 0.24);
+  border: 0.8px solid rgba(96, 165, 250, 0.4);
+  color: #93c5fd;
+}
+
+.rental-status-badge.badge-finished {
+  background: rgba(255, 255, 255, 0.08);
+  border: 0.8px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.rental-action-cell {
+  display: flex;
+  align-items: center;
+}
+
+.rental-finish-btn {
+  width: 144px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.rental-finished-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.rentals-empty {
+  padding: 24px 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}

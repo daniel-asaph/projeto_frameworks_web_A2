@@ -1,4 +1,3 @@
-
 import './AuthHeader.css';
 
 export interface AuthHeaderProps {

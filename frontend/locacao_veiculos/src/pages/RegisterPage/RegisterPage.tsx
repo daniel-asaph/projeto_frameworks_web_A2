@@ -1,31 +1,27 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { AuthLayout } from '../../components/AuthLayout/AuthLayout';
 import { AuthCard } from '../../components/AuthCard/AuthCard';
 import { AuthHeader } from '../../components/AuthHeader/AuthHeader';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import { AuthFooter } from '../../components/AuthFooter/AuthFooter';
+import type { CadastroUsuarioPayload } from '../../types';
 import './RegisterPage.css';
 
-export interface RegisterData {
-  name: string;
-  email: string;
-  password: string;
-}
-
 export interface RegisterPageProps {
-  onRegister?: (data: RegisterData) => void;
+  onRegister?: (data: CadastroUsuarioPayload) => void;
   onNavigateToLogin?: () => void;
 }
 
 export function RegisterPage({ onRegister, onNavigateToLogin }: RegisterPageProps) {
-  const [name, setName] = useState('');
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onRegister?.({ name, email, password });
+    onRegister?.({ nome: nome.trim(), email: email.trim(), senha });
   };
 
   return (
@@ -42,8 +38,8 @@ export function RegisterPage({ onRegister, onNavigateToLogin }: RegisterPageProp
               icon="user"
               type="text"
               placeholder="Nome"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
               required
             />
             <Input
@@ -58,8 +54,8 @@ export function RegisterPage({ onRegister, onNavigateToLogin }: RegisterPageProp
               icon="lock"
               type="password"
               placeholder="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
               required
             />
           </div>

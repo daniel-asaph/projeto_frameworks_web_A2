@@ -1,0 +1,215 @@
+.new-rental-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.new-rental-title {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.new-rental-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.new-rental-vehicle-summary {
+  padding: 28px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(34px);
+  -webkit-backdrop-filter: blur(34px);
+  border: 0.8px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.summary-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.summary-category {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.summary-badge {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.summary-vehicle-name {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.summary-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 12px 0;
+}
+
+.summary-specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.summary-spec-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.summary-spec-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.summary-spec-value {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.summary-price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.summary-price-caption {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.summary-price-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.summary-price-amount {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.summary-price-unit {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.new-rental-form-card {
+  padding: 32px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(34px);
+  -webkit-backdrop-filter: blur(34px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.new-rental-field {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.new-rental-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.new-rental-date-input {
+  height: 50px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.78);
+  letter-spacing: 2px;
+}
+
+.new-rental-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.new-rental-total-main {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.new-rental-total-sub {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.new-rental-confirm-btn {
+  height: 50px;
+  border-radius: 12px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: auto;
+}
+
+@media (max-width: 860px) {
+  .new-rental-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.new-rental-error {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin: 0;
+}
