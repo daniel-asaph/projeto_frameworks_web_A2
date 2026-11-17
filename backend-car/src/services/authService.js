@@ -56,6 +56,12 @@ const loginUsuario = async (email, senha) => {
         throw new Error('Email ou senha inválidos.');
     }
 
+    if (!process.env.JWT_SECRET) {
+        const erro = new Error('JWT_SECRET não está definido no ambiente.');
+        erro.statusCode = 500;
+        throw erro;
+    }
+    
     const token = jwt.sign(
         { sub: usuario.id },
         process.env.JWT_SECRET || 'chave_secreta_padrao_locacao_veiculos',

@@ -2,8 +2,7 @@ const locacaoService = require('../services/locacaoService');
 
 const criarLocacao = async (req, res) => {
   try {
-    const usuarioId = req.usuarioId || req.userId || req.usuario?.id || req.body.usuarioId;
-
+    const usuarioId = req.usuarioId;
     if (!usuarioId) {
       return res.status(401).json({ erro: "Usuário não autenticado." });
     }
@@ -18,7 +17,7 @@ const criarLocacao = async (req, res) => {
 
 const listarMinhasLocacoes = async (req, res) => {
   try {
-    const usuarioId = req.usuarioId || req.userId || req.usuario?.id || req.query.usuarioId;
+    const usuarioId = req.usuarioId;
 
     if (!usuarioId) {
       return res.status(401).json({ erro: "Usuário não autenticado." });
@@ -34,7 +33,7 @@ const listarMinhasLocacoes = async (req, res) => {
 const finalizarLocacao = async (req, res) => {
   try {
     const { id } = req.params;
-    const usuarioId = req.usuarioId || req.userId || req.usuario?.id || req.body.usuarioId;
+    const usuarioId = req.usuarioId;
 
     if (!usuarioId) {
       return res.status(401).json({ erro: "Usuário não autenticado." });

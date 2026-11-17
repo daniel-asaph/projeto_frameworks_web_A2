@@ -9,7 +9,7 @@ const cadastrarUsuario = async (req, res) => {
         return res.status(201).json(usuario);
 
     } catch (error) {
-        if (error.message === 'Email já cadastrado') {
+        if (error.message === 'Email já cadastrado.') {
             return res.status(409).json({ error: error.message });
         }
         return res.status(400).json({ error: error.message });
