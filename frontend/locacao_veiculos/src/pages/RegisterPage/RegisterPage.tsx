@@ -6,11 +6,12 @@ import { AuthHeader } from '../../components/AuthHeader/AuthHeader';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import { AuthFooter } from '../../components/AuthFooter/AuthFooter';
+import { getApiErrorMessage } from '../../api/api';
 import type { CadastroUsuarioPayload } from '../../types';
 import './RegisterPage.css';
 
 export interface RegisterPageProps {
-  onRegister?: (data: CadastroUsuarioPayload) => void;
+  onRegister?: (data: CadastroUsuarioPayload) => Promise<void> | void;
   onNavigateToLogin?: () => void;
 }
 
@@ -18,10 +19,20 @@ export function RegisterPage({ onRegister, onNavigateToLogin }: RegisterPageProp
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onRegister?.({ nome: nome.trim(), email: email.trim(), senha });
+    setError('');
+    setLoading(true);
+    try {
+      await onRegister?.({ nome: nome.trim(), email: email.trim(), senha });
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Erro ao criar conta.'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -60,7 +71,11 @@ export function RegisterPage({ onRegister, onNavigateToLogin }: RegisterPageProp
             />
           </div>
 
-          <Button type="submit">Criar conta</Button>
+          {error && <p className="register-error">{error}</p>}
+
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Criando conta...' : 'Criar conta'}
+          </Button>
         </form>
 
         <AuthFooter

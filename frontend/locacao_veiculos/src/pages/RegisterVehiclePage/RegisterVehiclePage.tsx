@@ -2,11 +2,12 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
+import { getApiErrorMessage } from '../../api/api';
 import type { CriarVeiculoPayload } from '../../types';
 import './RegisterVehiclePage.css';
 
 export interface RegisterVehiclePageProps {
-  onRegisterVehicle?: (payload: CriarVeiculoPayload) => void;
+  onRegisterVehicle?: (payload: CriarVeiculoPayload) => Promise<void> | void;
 }
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -18,8 +19,9 @@ export function RegisterVehiclePage({ onRegisterVehicle }: RegisterVehiclePagePr
   const [ano, setAno] = useState('');
   const [valorDiaria, setValorDiaria] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const anoNumber = Number(ano);
@@ -35,13 +37,20 @@ export function RegisterVehiclePage({ onRegisterVehicle }: RegisterVehiclePagePr
     }
 
     setError('');
-    onRegisterVehicle?.({
-      marca: marca.trim(),
-      modelo: modelo.trim(),
-      placa: placa.trim().toUpperCase(),
-      ano: anoNumber,
-      valorDiaria: valorDiariaNumber,
-    });
+    setLoading(true);
+    try {
+      await onRegisterVehicle?.({
+        marca: marca.trim(),
+        modelo: modelo.trim(),
+        placa: placa.trim().toUpperCase(),
+        ano: anoNumber,
+        valorDiaria: valorDiariaNumber,
+      });
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Erro ao cadastrar veículo.'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -133,8 +142,8 @@ export function RegisterVehiclePage({ onRegisterVehicle }: RegisterVehiclePagePr
           {error && <p className="register-vehicle-error">{error}</p>}
 
           <div className="register-vehicle-footer">
-            <Button type="submit" className="register-vehicle-submit-btn">
-              Cadastrar Veículo
+            <Button type="submit" className="register-vehicle-submit-btn" disabled={loading}>
+              {loading ? 'Cadastrando...' : 'Cadastrar Veículo'}
             </Button>
             <span className="register-vehicle-required-note">*Campos obrigatórios</span>
           </div>

@@ -6,21 +6,32 @@ import { AuthHeader } from '../../components/AuthHeader/AuthHeader';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import { AuthFooter } from '../../components/AuthFooter/AuthFooter';
+import { getApiErrorMessage } from '../../api/api';
 import type { LoginPayload } from '../../types';
 import './LoginPage.css';
 
 export interface LoginPageProps {
-  onLogin?: (credentials: LoginPayload) => void;
+  onLogin?: (credentials: LoginPayload) => Promise<void> | void;
   onNavigateToRegister?: () => void;
 }
 
 export function LoginPage({ onLogin, onNavigateToRegister }: LoginPageProps) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onLogin?.({ email: email.trim(), senha });
+    setError('');
+    setLoading(true);
+    try {
+      await onLogin?.({ email: email.trim(), senha });
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Erro ao fazer login.'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,7 +62,11 @@ export function LoginPage({ onLogin, onNavigateToRegister }: LoginPageProps) {
             />
           </div>
 
-          <Button type="submit">Entrar</Button>
+          {error && <p className="login-error">{error}</p>}
+
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Entrando...' : 'Entrar'}
+          </Button>
         </form>
 
         <AuthFooter

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LoginPage } from './pages/LoginPage/LoginPage';
 import { RegisterPage } from './pages/RegisterPage/RegisterPage';
 import { MainLayout } from './components/MainLayout/MainLayout';
@@ -13,28 +13,70 @@ import type {
   CriarVeiculoPayload,
   Locacao,
   LoginPayload,
+  Usuario,
   Veiculo,
 } from './types';
-import { MOCK_LOCACOES, MOCK_USUARIO_ID, MOCK_VEICULOS } from './mocks/data';
-import { daysBetween, todayIso } from './utils/format';
+import { authService } from './services/authService';
+import { veiculoService } from './services/veiculoService';
+import { locacaoService } from './services/locacaoService';
 import './App.css';
 
 type PageState = 'login' | 'register' | AppRoute;
 
+function getStoredUser(): Usuario | null {
+  const raw = localStorage.getItem('usuario');
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as Usuario;
+  } catch {
+    return null;
+  }
+}
+
 function App() {
-  const [currentPage, setCurrentPage] = useState<PageState>('login');
-  const [vehicles, setVehicles] = useState<Veiculo[]>(MOCK_VEICULOS);
-  const [rentals, setRentals] = useState<Locacao[]>(MOCK_LOCACOES);
+  const [user, setUser] = useState<Usuario | null>(() => getStoredUser());
+  const [currentPage, setCurrentPage] = useState<PageState>(() =>
+    getStoredUser() ? 'vehicles' : 'login'
+  );
+  const [vehicles, setVehicles] = useState<Veiculo[]>([]);
+  const [rentals, setRentals] = useState<Locacao[]>([]);
   const [selectedVehicle, setSelectedVehicle] = useState<Veiculo | null>(null);
 
-  const handleLogin = (credentials: LoginPayload) => {
-    void credentials;
+  useEffect(() => {
+    if (!user) return;
+
+    veiculoService
+      .listar()
+      .then(setVehicles)
+      .catch((err) => console.error('Erro ao carregar veículos:', err));
+
+    locacaoService
+      .listarPorUsuario(user.id)
+      .then(setRentals)
+      .catch((err) => console.error('Erro ao carregar locações:', err));
+  }, [user]);
+
+  const handleLogin = async (credentials: LoginPayload) => {
+    const { usuario, token } = await authService.login(credentials);
+    localStorage.setItem('token', token);
+    localStorage.setItem('usuario', JSON.stringify(usuario));
+    setUser(usuario);
     setCurrentPage('vehicles');
   };
 
-  const handleRegister = (data: CadastroUsuarioPayload) => {
-    void data;
-    setCurrentPage('vehicles');
+  const handleRegister = async (data: CadastroUsuarioPayload) => {
+    await authService.cadastrar(data);
+    await handleLogin({ email: data.email, senha: data.senha });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    setUser(null);
+    setVehicles([]);
+    setRentals([]);
+    setSelectedVehicle(null);
+    setCurrentPage('login');
   };
 
   const handleSelectVehicleToRent = (vehicle: Veiculo) => {
@@ -42,62 +84,35 @@ function App() {
     setCurrentPage('new-rental');
   };
 
-  const handleRegisterVehicle = (payload: CriarVeiculoPayload) => {
-    const newVehicle: Veiculo = {
-      ...payload,
-      id: Math.max(0, ...vehicles.map((v) => v.id)) + 1,
-      disponibilidade: true,
-    };
+  const handleRegisterVehicle = async (payload: CriarVeiculoPayload) => {
+    const newVehicle = await veiculoService.criar(payload);
     setVehicles((prev) => [newVehicle, ...prev]);
     setCurrentPage('vehicles');
   };
 
-  const handleConfirmRental = (payload: CriarLocacaoPayload) => {
-    const veiculo = vehicles.find((v) => v.id === payload.veiculoId);
-    if (!veiculo) return;
-
-    const newRental: Locacao = {
-      id: Math.max(0, ...rentals.map((r) => r.id)) + 1,
-      dataInicio: payload.dataInicio,
-      dataDevolucaoPrevista: payload.dataDevolucaoPrevista,
-      dataDevolucaoEfetiva: null,
-      valorTotal: null,
-      status: 'ATIVA',
-      usuarioId: MOCK_USUARIO_ID,
-      veiculoId: veiculo.id,
-      veiculo: { ...veiculo, disponibilidade: false },
-    };
+  const handleConfirmRental = async (payload: CriarLocacaoPayload) => {
+    if (!user) return;
+    const newRental = await locacaoService.criar(user.id, payload);
 
     setRentals((prev) => [newRental, ...prev]);
     setVehicles((prev) =>
-      prev.map((v) => (v.id === veiculo.id ? { ...v, disponibilidade: false } : v))
+      prev.map((v) => (v.id === payload.veiculoId ? { ...v, disponibilidade: false } : v))
     );
     setSelectedVehicle(null);
     setCurrentPage('my-rentals');
   };
 
-  const handleFinishRental = (rentalId: number) => {
-    const rental = rentals.find((r) => r.id === rentalId);
-    if (!rental) return;
-
-    const dataDevolucaoEfetiva = todayIso();
-    const dias = Math.max(1, daysBetween(rental.dataInicio, dataDevolucaoEfetiva));
-    const valorDiaria = rental.veiculo?.valorDiaria ?? 0;
+  const handleFinishRental = async (rentalId: number) => {
+    if (!user) return;
+    const updatedRental = await locacaoService.finalizar(rentalId, user.id);
 
     setRentals((prev) =>
-      prev.map((r) =>
-        r.id === rentalId
-          ? {
-              ...r,
-              status: 'FINALIZADA',
-              dataDevolucaoEfetiva,
-              valorTotal: dias * valorDiaria,
-            }
-          : r
-      )
+      prev.map((r) => (r.id === rentalId ? updatedRental : r))
     );
     setVehicles((prev) =>
-      prev.map((v) => (v.id === rental.veiculoId ? { ...v, disponibilidade: true } : v))
+      prev.map((v) =>
+        v.id === updatedRental.veiculoId ? { ...v, disponibilidade: true } : v
+      )
     );
   };
 
@@ -123,7 +138,7 @@ function App() {
     <MainLayout
       activeRoute={currentPage}
       onNavigate={(route) => setCurrentPage(route)}
-      onLogout={() => setCurrentPage('login')}
+      onLogout={handleLogout}
     >
       {currentPage === 'vehicles' && (
         <VehiclesPage

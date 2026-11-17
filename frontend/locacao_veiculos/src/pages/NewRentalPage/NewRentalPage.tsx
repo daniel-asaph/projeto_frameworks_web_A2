@@ -2,24 +2,26 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
+import { getApiErrorMessage } from '../../api/api';
 import type { CriarLocacaoPayload, Veiculo } from '../../types';
 import { daysBetween, formatCurrency, todayIso } from '../../utils/format';
 import './NewRentalPage.css';
 
 export interface NewRentalPageProps {
   vehicle: Veiculo;
-  onConfirmRental?: (payload: CriarLocacaoPayload) => void;
+  onConfirmRental?: (payload: CriarLocacaoPayload) => Promise<void> | void;
 }
 
 export function NewRentalPage({ vehicle, onConfirmRental }: NewRentalPageProps) {
   const [dataInicio, setDataInicio] = useState(todayIso());
   const [dataDevolucaoPrevista, setDataDevolucaoPrevista] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const dias = daysBetween(dataInicio, dataDevolucaoPrevista);
   const valorTotal = dias * vehicle.valorDiaria;
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!vehicle.disponibilidade) {
@@ -32,11 +34,18 @@ export function NewRentalPage({ vehicle, onConfirmRental }: NewRentalPageProps) 
     }
 
     setError('');
-    onConfirmRental?.({
-      veiculoId: vehicle.id,
-      dataInicio,
-      dataDevolucaoPrevista,
-    });
+    setLoading(true);
+    try {
+      await onConfirmRental?.({
+        veiculoId: vehicle.id,
+        dataInicio,
+        dataDevolucaoPrevista,
+      });
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Erro ao confirmar locação.'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -129,9 +138,9 @@ export function NewRentalPage({ vehicle, onConfirmRental }: NewRentalPageProps) 
           <Button
             type="submit"
             className="new-rental-confirm-btn"
-            disabled={!vehicle.disponibilidade}
+            disabled={!vehicle.disponibilidade || loading}
           >
-            Confirmar locação
+            {loading ? 'Confirmando...' : 'Confirmar locação'}
           </Button>
         </form>
       </div>
