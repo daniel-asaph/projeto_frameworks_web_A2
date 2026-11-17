@@ -58,7 +58,7 @@ const loginUsuario = async (email, senha) => {
 
     const token = jwt.sign(
         { sub: usuario.id },
-        process.env.JWT_SECRET,
+        process.env.JWT_SECRET || 'chave_secreta_padrao_locacao_veiculos',
         { expiresIn: '1h' }
     );
 
