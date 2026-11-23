@@ -4,7 +4,7 @@ import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import { getApiErrorMessage } from '../../api/api';
 import type { CriarLocacaoPayload, Veiculo } from '../../types';
-import { daysBetween, formatCurrency, todayIso } from '../../utils/format';
+import { addDaysIso, daysBetween, formatCurrency, todayIso } from '../../utils/format';
 import './NewRentalPage.css';
 
 export interface NewRentalPageProps {
@@ -104,7 +104,13 @@ export function NewRentalPage({ vehicle, onConfirmRental }: NewRentalPageProps) 
               className="new-rental-date-input"
               value={dataInicio}
               min={todayIso()}
-              onChange={(e) => setDataInicio(e.target.value)}
+              onChange={(e) => {
+                const novaDataInicio = e.target.value;
+                setDataInicio(novaDataInicio);
+                if (dataDevolucaoPrevista && dataDevolucaoPrevista <= novaDataInicio) {
+                  setDataDevolucaoPrevista(addDaysIso(novaDataInicio, 1));
+                }
+              }}
               required
             />
           </div>
@@ -120,7 +126,7 @@ export function NewRentalPage({ vehicle, onConfirmRental }: NewRentalPageProps) 
               iconPosition="right"
               className="new-rental-date-input"
               value={dataDevolucaoPrevista}
-              min={dataInicio}
+              min={addDaysIso(dataInicio, 1) || dataInicio}
               onChange={(e) => setDataDevolucaoPrevista(e.target.value)}
               required
             />

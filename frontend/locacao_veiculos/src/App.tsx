@@ -139,6 +139,7 @@ function App() {
       activeRoute={currentPage}
       onNavigate={(route) => setCurrentPage(route)}
       onLogout={handleLogout}
+      userName={user?.nome}
     >
       {currentPage === 'vehicles' && (
         <VehiclesPage

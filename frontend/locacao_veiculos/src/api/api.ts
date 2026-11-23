@@ -17,8 +17,8 @@ api.interceptors.request.use((config) => {
 
 export function getApiErrorMessage(err: unknown, fallback = 'Ocorreu um erro inesperado.'): string {
   if (axios.isAxiosError(err)) {
-    const data = err.response?.data as { erro?: string; error?: string } | undefined;
-    return data?.erro || data?.error || fallback;
+    const data = err.response?.data as { erro?: string; error?: string; message?: string } | undefined;
+    return data?.erro || data?.error || data?.message || fallback;
   }
   if (err instanceof Error) {
     return err.message;

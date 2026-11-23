@@ -7,6 +7,7 @@ export interface HeaderProps {
   activeRoute: AppRoute;
   onNavigate: (route: AppRoute) => void;
   onLogout: () => void;
+  userName?: string;
 }
 
 const NAV_ITEMS: { route: AppRoute; label: string }[] = [
@@ -15,7 +16,7 @@ const NAV_ITEMS: { route: AppRoute; label: string }[] = [
   { route: 'my-rentals', label: 'Minhas Locações' },
 ];
 
-export function Header({ activeRoute, onNavigate, onLogout }: HeaderProps) {
+export function Header({ activeRoute, onNavigate, onLogout, userName }: HeaderProps) {
   return (
     <header className="app-header">
       <div className="app-header-inner">
@@ -34,10 +35,13 @@ export function Header({ activeRoute, onNavigate, onLogout }: HeaderProps) {
           ))}
         </nav>
 
-        <button type="button" className="app-header-logout" onClick={onLogout}>
-          <img src={logOutIcon} alt="" />
-          <span>Sair</span>
-        </button>
+        <div className="app-header-user-actions">
+          {userName && <span className="app-header-username">{userName}</span>}
+          <button type="button" className="app-header-logout" onClick={onLogout}>
+            <img src={logOutIcon} alt="" />
+            <span>Sair</span>
+          </button>
+        </div>
       </div>
     </header>
   );

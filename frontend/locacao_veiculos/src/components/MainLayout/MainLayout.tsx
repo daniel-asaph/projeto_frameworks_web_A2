@@ -8,6 +8,7 @@ export interface MainLayoutProps {
   activeRoute: AppRoute;
   onNavigate: (route: AppRoute) => void;
   onLogout: () => void;
+  userName?: string;
   children: ReactNode;
 }
 
@@ -15,6 +16,7 @@ export function MainLayout({
   activeRoute,
   onNavigate,
   onLogout,
+  userName,
   children,
 }: MainLayoutProps) {
   return (
@@ -24,6 +26,7 @@ export function MainLayout({
         activeRoute={activeRoute}
         onNavigate={onNavigate}
         onLogout={onLogout}
+        userName={userName}
       />
       <main className="main-layout-content">{children}</main>
     </div>
